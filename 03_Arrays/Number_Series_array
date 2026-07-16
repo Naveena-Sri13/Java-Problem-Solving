@@ -59,3 +59,42 @@ public class sum_even_odd {
         System.out.println("Sum of odd numbers:"+odd);
     }
 }
+
+//Sum of elements in odd and even position
+
+import java.util.Scanner;
+
+//Initialise main class and method
+public class sum_position {
+    static void main(String[] args) {
+
+        //get method
+        Scanner sc=new Scanner(System.in);
+        System.out.print("Enter the size  of numbers:");
+        int size=sc.nextInt();
+        System.out.print("Enter the number series:");
+        int[] arr=new int[size];
+        
+        //get array
+        for(int i=0;i<size;i++){
+            arr[i]=sc.nextInt();
+        }
+
+        //initialise variables
+        int odd=0;
+        int even=0;
+
+        //perform loop operation
+        for(int i=0;i<size;i+=2){
+            odd+=arr[i];
+        }
+
+        for(int i=1;i<size;i+=2){
+            even+=arr[i];
+        }
+        
+        //print output
+        System.out.println("Sum of odd positions:"+ odd);
+        System.out.println("Sum of even positions:"+ even);
+    }
+}
