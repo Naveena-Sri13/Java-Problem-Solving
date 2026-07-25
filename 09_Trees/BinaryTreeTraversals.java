@@ -1,126 +1,130 @@
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Scanner;
 
-class node {
+class Node {
     int data;
-    node left;
-    node right;
+    Node left, right;
 
-    node(int data) {
+    Node(int data) {
         this.data = data;
-        left = null;
-        right = null;
+        this.left = null;
+        this.right = null;
     }
 }
 
-class operations {
-    node root = null;
+class Tree{
 
-    // Insert into BST
-    public void insert(int data) {
-        node nn = new node(data);
+    Node root = null;
 
-        if (root == null) {
-            root = nn;
+    public Node createTree(int[] arr){
+        Queue<Node> que = new LinkedList<>();
+
+        root = new Node(arr[0]);
+        que.add(root);
+
+        int i = 1;
+
+        while(i < arr.length){
+            Node cur = que.poll();
+
+             // Adding Left child
+            if(arr[i] != -1){
+                cur.left = new Node(arr[i]);
+                que.add(cur.left);
+            }
+            i++;
+
+            if(i >= arr.length) break;
+
+            // Adding right child
+            if(arr[i] != -1) {
+                cur.right = new Node(arr[i]);
+                que.add(cur.right);
+            }
+            i++;
+        }
+        return root;
+    }
+
+    public void Levelorder(){
+        Queue<Node> q = new LinkedList<>();
+        q.add(root);
+
+        while(!q.isEmpty()){
+            Node cur = q.poll();
+
+            System.out.print(cur.data +" ");
+
+            if(cur.left != null){
+                q.add(cur.left);
+            }
+
+            if(cur.right != null){
+                q.add(cur.right);
+            }
+        }
+    }
+
+    public void Inorder(Node root){
+        if(root == null){
             return;
         }
 
-        node temp = root;
-
-        while (true) {
-            if (data < temp.data) {
-                if (temp.left == null) {
-                    temp.left = nn;
-                    break;
-                } else {
-                    temp = temp.left;
-                }
-            } else {
-                if (temp.right == null) {
-                    temp.right = nn;
-                    break;
-                } else {
-                    temp = temp.right;
-                }
-            }
-        }
+        Inorder(root.left);
+        System.out.print(root.data +" ");
+        Inorder(root.right);
     }
 
-    // Inorder Traversal
-    public void inorder(node root) {
-        if (root != null) {
-            inorder(root.left);
-            System.out.print(root.data + " ");
-            inorder(root.right);
+    public void Preorder(Node root){
+        if(root == null){
+            return;
         }
+
+        System.out.print(root.data +" ");
+        Preorder(root.left);
+        Preorder(root.right);
     }
 
-    // Preorder Traversal
-    public void preorder(node root) {
-        if (root != null) {
-            System.out.print(root.data + " ");
-            preorder(root.left);
-            preorder(root.right);
+    public void Postorder(Node root){
+        if(root == null){
+            return;
         }
-    }
 
-    // Postorder Traversal
-    public void postorder(node root) {
-        if (root != null) {
-            postorder(root.left);
-            postorder(root.right);
-            System.out.print(root.data + " ");
-        }
+        Postorder(root.left);
+        Postorder(root.right);
+        System.out.print(root.data +" ");
     }
 }
-
-public class tree_traversal {
+public class BinaryTree{
     public static void main(String[] args) {
-
         Scanner sc = new Scanner(System.in);
-        operations obj = new operations();
+        Tree ob = new Tree();
 
-        while (true) {
-            System.out.println("\n1.Insert");
-            System.out.println("2.Inorder");
-            System.out.println("3.Preorder");
-            System.out.println("4.Postorder");
-            System.out.println("5.Exit");
-            System.out.print("Enter your choice: ");
+        int n = sc.nextInt();
 
-            int choice = sc.nextInt();
+        int[] arr = new int[n];
 
-            switch (choice) {
-
-                case 1:
-                    System.out.print("Enter value: ");
-                    int n = sc.nextInt();
-                    obj.insert(n);
-                    break;
-
-                case 2:
-                    System.out.println("Inorder Traversal:");
-                    obj.inorder(obj.root);
-                    System.out.println();
-                    break;
-
-                case 3:
-                    System.out.println("Preorder Traversal:");
-                    obj.preorder(obj.root);
-                    System.out.println();
-                    break;
-
-                case 4:
-                    System.out.println("Postorder Traversal:");
-                    obj.postorder(obj.root);
-                    System.out.println();
-                    break;
-
-                case 5:
-                    System.exit(0);
-
-                default:
-                    System.out.println("Invalid Choice");
-            }
+        for (int i = 0; i < n; i++) {
+            arr[i] = sc.nextInt();
         }
+
+        Node root = ob.createTree(arr);
+
+        System.out.print("The LevelOrder Traversal of the Tree is: ");
+        ob.Levelorder();
+        System.out.println();
+
+        System.out.print("The InOrder Traversal of the Tree is: ");
+        ob.Inorder(root);
+        System.out.println();
+
+        System.out.print("The PreOrder Traversal of the Tree is: ");
+        ob.Preorder(root);
+        System.out.println();
+
+        System.out.print("The PostOrder Traversal of the Tree is: ");
+        ob.Postorder(root);
+        System.out.println();
     }
 }
