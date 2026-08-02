@@ -1,49 +1,34 @@
-import java.util.Scanner;
+import java.util.Arrays;
 
-public class Split_the_teams {
-    public static int Players(int n, int[] arr){
-        boolean taken = false;
-        int ans = 0;
-        int team=n/2;
-        int sum=0;
-        for(int i=0;i<n;i++){
-            sum+=arr[i];
-        }
-        int target=sum/team;
-        for(int i=0;i<n;i++){
-             ans=target-arr[i];
-        }
-        for(int i=0;i<n;i++){
-            if (taken[i]){
-                continue;
-            }
-            int match=target-arr[i];
-            boolean found= false;
-            int chemistry=0;
-            for(int j=i+1;j<n;j++){
-                if(!taken[j] && arr[j]== match){
-                    chemistry+=arr[i]* arr[j];
-                }
-                taken[i]=true;
-                taken[j]=true;
+public class SplitTheTeams {
 
-                found=true;
-                break;
+    public static long dividePlayers(int[] skill) {
+        Arrays.sort(skill);
+
+        int n = skill.length;
+        int left = 0;
+        int right = n - 1;
+
+        int target = skill[left] + skill[right];
+        long chemistry = 0;
+
+        while (left < right) {
+            if (skill[left] + skill[right] != target) {
+                return -1;
             }
 
+            chemistry += (long) skill[left] * skill[right];
+
+            left++;
+            right--;
         }
+
+        return chemistry;
     }
-    public static void main(String[] args){
-        Scanner sc=new Scanner(System.in);
-        System.out.print("Enter the size of team:");
-        int n=sc.nextInt();
-        System.out.print("Enter the Skill of Players:");
-        int[] arr=new int[n];
-        boolean[] vis=new boolean[n];
-        for(int i=0;i<n;i++){
-            arr[i]=sc.nextInt();
-        }
-        int chem = Players(arr, n);
-        System.out.print("The sum chemistry:"+ chem);
+
+    public static void main(String[] args) {
+        int[] skill = {3, 2, 5, 1, 3, 4};
+
+        System.out.println(dividePlayers(skill));
     }
 }
